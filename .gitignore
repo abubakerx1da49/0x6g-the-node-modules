@@ -1,0 +1,27 @@
+# Flatpak & Meson build environments
+.flatpak-builder/
+build-dir/
+_build/
+build/
+subprojects/
+
+# Python caching & bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# User-specific / IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*~
+.DS_Store
