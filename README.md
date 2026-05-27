@@ -19,37 +19,27 @@
 ### 1. Ready to Scan
 A minimal, clean welcome page that integrates seamlessly with your desktop. Scan your home folder in one click or choose any custom directory.
 
-<p align="center">
-  <img src="public/1-start-screen-asking-to-scan.png" alt="Welcome Screen" width="600">
-</p>
+<img src="public/1-start-screen-asking-to-scan.png" alt="Welcome Screen" width="100%" style="border-radius: 12px;">
 
 ### 2. Live Scan Traversal
 Watch the scanning engine work in real-time as a non-blocking background thread traverses all directories without causing any UI stutter.
 
-<p align="center">
-  <img src="public/2-scanning-onprogress-screen.png" alt="Scanning Progress" width="600">
-</p>
+<img src="public/2-scanning-onprogress-screen.png" alt="Scanning Progress" width="100%" style="border-radius: 12px;">
 
 ### 3. Comprehensive Dashboard & Explorer
 Review partition space analytics, Node modules occupancy gauges, and your projects list. Under **Node Install Products**, you get a complete status report of all Node projects (`package.json`) regardless of whether dependencies are currently present or clean.
 
-<p align="center">
-  <img src="public/3-main-screen-showing-all-modules.png" alt="Main Dashboard Dark Mode" width="600">
-</p>
+<img src="public/3-main-screen-showing-all-modules.png" alt="Main Dashboard Dark Mode" width="100%" style="border-radius: 12px;">
 
 ### 4. Secure Bulk Deletion
 Select multiple `node_modules` folders to clean and review them in a clean, confirmation action block before safe deletion.
 
-<p align="center">
-  <img src="public/4-the-delete-modal-snapshot.png" alt="Delete Confirmation" width="600">
-</p>
+<img src="public/4-the-delete-modal-snapshot.png" alt="Delete Confirmation" width="100%" style="border-radius: 12px;">
 
 ### 5. Native Day/Night Modes
 Responsive native Libadwaita rendering that perfectly respects your system's light and dark preferences.
 
-<p align="center">
-  <img src="public/5-main-screen-but-in-light-theme.png" alt="Main Dashboard Light Mode" width="600">
-</p>
+<img src="public/5-main-screen-but-in-light-theme.png" alt="Main Dashboard Light Mode" width="100%" style="border-radius: 12px;">
 
 ---
 
