@@ -2,7 +2,7 @@
 
 A beautiful, native GNOME & Libadwaita application to scan, explore, and clean up heavy `node_modules` folders to instantly reclaim your disk space.
 
-The project is officially hosted at: **[0x1da49.com/0x8h](http://0x1da49.com/0x8h)**
+The project is officially hosted at: **[0x1da49.com/0x6g](http://0x1da49.com/0x6g)**
 
 ---
 
@@ -14,11 +14,11 @@ You can install the standalone, secure Flatpak bundle directly on any Linux dist
 Copy and paste this single command into your terminal to automatically download and install the latest release:
 
 ```bash
-curl -L -o com.x1da49.thenodemodules.flatpak https://github.com/abubakerx1da49/0x8h-the-node-modules/releases/latest/download/com.x1da49.thenodemodules.flatpak && flatpak install --user ./com.x1da49.thenodemodules.flatpak
+curl -L -o com.x1da49.thenodemodules.flatpak https://github.com/abubakerx1da49/0x6g-the-node-modules/releases/latest/download/com.x1da49.thenodemodules.flatpak && flatpak install --user ./com.x1da49.thenodemodules.flatpak
 ```
 
 ### Option 2: Graphical Install
-1. Download the standalone bundle from our [GitHub Releases](https://github.com/abubakerx1da49/0x8h-the-node-modules/releases) (the `.flatpak` asset).
+1. Download the standalone bundle from our [GitHub Releases](https://github.com/abubakerx1da49/0x6g-the-node-modules/releases) (the `.flatpak` asset).
 2. **Double-click** the downloaded file to launch your system's App Store (GNOME Software / Discover) and click **Install**.
 
 ---
