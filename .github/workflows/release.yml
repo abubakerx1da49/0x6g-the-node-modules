@@ -1,0 +1,90 @@
+name: Build and Deploy Flatpak Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Trigger ONLY if the commit message starts with "Deploy:"
+    if: startsWith(github.event.head_commit.message, 'Deploy:')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Parse Version from Commit Message
+        id: parse_version
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          # Extract the second word (e.g., "v1.0.0" from "Deploy: v1.0.0 - message")
+          VERSION=$(echo "$COMMIT_MSG" | awk '{print $2}')
+          
+          # Clean version name (remove trailing commas, colons)
+          VERSION=$(echo "$VERSION" | sed 's/[:,]//g')
+          
+          if [[ -z "$VERSION" ]]; then
+            echo "Error: Could not parse version from commit message. Make sure format is 'Deploy: v1.0.0'"
+            exit 1
+          fi
+          
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Parsed version as: $VERSION"
+
+      - name: Create and Push Git Tag
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Only create and push tag if it doesn't already exist
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists. Skipping tag creation."
+          else
+            git tag "$VERSION"
+            git push origin "$VERSION"
+            echo "Successfully created and pushed tag $VERSION"
+          fi
+
+      - name: Set up QEMU (for multi-architecture builds if needed)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Install Flatpak Builder dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Build Flatpak Bundle
+        uses: flatpak/flatpak-github-actions/flatpak-builder@master
+        with:
+          bundle: com.x1da49.thenodemodules.flatpak
+          manifest-path: com.x1da49.thenodemodules.json
+          cache: true
+          branch: master
+
+      - name: Create GitHub Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: The Node Modules Finder ${{ env.VERSION }}
+          body: |
+            ## 🚀 What's New
+            ${{ github.event.head_commit.message }}
+            
+            ---
+            ### 📦 Direct Terminal Installation:
+            ```bash
+            flatpak install https://github.com/${{ github.repository }}/releases/download/${{ env.VERSION }}/com.x1da49.thenodemodules.flatpak
+            ```
+          files: |
+            com.x1da49.thenodemodules.flatpak
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
