@@ -1,10 +1,10 @@
 {
-    "id" : "com.x1da49.thenodemodules",
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "48",
-    "sdk" : "org.gnome.Sdk",
-    "command" : "thenodemodules",
-    "finish-args" : [
+    "id": "com.x1da49.thenodemodules",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "48",
+    "sdk": "org.gnome.Sdk",
+    "command": "thenodemodules",
+    "finish-args": [
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
@@ -12,7 +12,7 @@
         "--socket=wayland",
         "--filesystem=host"
     ],
-    "cleanup" : [
+    "cleanup": [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -23,15 +23,16 @@
         "*.la",
         "*.a"
     ],
-    "modules" : [
+    "modules": [
         {
-            "name" : "thenodemodules",
-            "builddir" : true,
-            "buildsystem" : "meson",
-            "sources" : [
+            "name": "thenodemodules",
+            "builddir": true,
+            "buildsystem": "meson",
+            "sources": [
                 {
-                    "type" : "git",
-                    "url" : "file:///home/abubakersiddiquehobbies/Projects"
+                    "type": "git",
+                    "url": "https://github.com/abubakerx1da49/0x8h-the-node-modules.git",
+                    "tag": "v1.0.0"
                 }
             ]
         }
