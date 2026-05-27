@@ -62,15 +62,12 @@ jobs:
 
       - name: Add Flathub remote repository
         run: |
-          sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
       - name: Build Flatpak Bundle
-        uses: flatpak/flatpak-github-actions/flatpak-builder@master
-        with:
-          bundle: com.x1da49.thenodemodules.flatpak
-          manifest-path: com.x1da49.thenodemodules.json
-          cache: true
-          branch: master
+        run: |
+          flatpak-builder --user --force-clean --install-deps-from=flathub --repo=repo build-dir com.x1da49.thenodemodules.json
+          flatpak build-bundle repo com.x1da49.thenodemodules.flatpak com.x1da49.thenodemodules
 
       - name: Create GitHub Release and Upload Asset
         uses: softprops/action-gh-release@v2
