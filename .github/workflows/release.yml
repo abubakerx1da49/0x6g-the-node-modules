@@ -60,6 +60,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder
 
+      - name: Add Flathub remote repository
+        run: |
+          sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
       - name: Build Flatpak Bundle
         uses: flatpak/flatpak-github-actions/flatpak-builder@master
         with:
