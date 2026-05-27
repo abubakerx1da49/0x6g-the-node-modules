@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.x1da49.thenodemodules
+Exec=@bindir@/thenodemodules --gapplication-service

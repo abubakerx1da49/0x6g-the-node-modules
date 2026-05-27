@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=The Node Modules
+Exec=thenodemodules
+Icon=com.x1da49.thenodemodules
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

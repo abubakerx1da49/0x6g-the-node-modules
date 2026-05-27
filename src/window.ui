@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ThenodemodulesWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">The Node Modules Finder</property>
+    <property name="default-width">550</property>
+    <property name="default-height">850</property>
+    <property name="content">
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <property name="child">
+          <object class="AdwToolbarView" id="toolbar_view">
+            <child type="top">
+              <object class="AdwHeaderBar" id="header_bar">
+                <property name="title-widget">
+                  <object class="AdwWindowTitle">
+                    <property name="title" translatable="yes">The Node Modules</property>
+                  </object>
+                </property>
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="primary">True</property>
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Main Menu</property>
+                    <property name="menu-model">primary_menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkButton" id="header_choose_btn">
+                    <property name="icon-name">folder-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Choose Folder to Scan</property>
+                    <property name="visible">False</property>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkButton" id="header_scan_btn">
+                    <property name="icon-name">view-refresh-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Rescan Folder</property>
+                    <property name="visible">False</property>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <property name="content">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+
+                <!-- Main GtkStack for Switching Pages -->
+                <child>
+                  <object class="GtkStack" id="stack">
+                    <property name="vexpand">True</property>
+                    <property name="transition-type">slide-left-right</property>
+
+                    <!-- Page 1: Welcome Status Page -->
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">welcome_page</property>
+                        <property name="child">
+                          <object class="AdwStatusPage" id="welcome_status_page">
+                            <property name="title" translatable="yes">Find Node Modules</property>
+                            <property name="description" translatable="yes">Scan your directory paths to discover heavy node_modules folders. Clean them easily to reclaim space.</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <property name="halign">center</property>
+                                <child>
+                                  <object class="GtkButton" id="scan_home_btn">
+                                    <property name="label" translatable="yes">Scan Home Directory</property>
+                                    <property name="halign">center</property>
+                                    <style>
+                                      <class name="suggested-action"/>
+                                      <class name="pill"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="choose_folder_btn">
+                                    <property name="label" translatable="yes">Choose Folder...</property>
+                                    <property name="halign">center</property>
+                                    <style>
+                                      <class name="flat"/>
+                                    </style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+
+                    <!-- Page 2: Scanning Page -->
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">scanning_page</property>
+                        <property name="child">
+                          <object class="AdwStatusPage" id="scanning_status_page">
+                            <property name="icon-name">system-search-symbolic</property>
+                            <property name="title" translatable="yes">Scanning for node_modules...</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">18</property>
+                                <property name="halign">center</property>
+                                <property name="width-request">350</property>
+                                <child>
+                                  <object class="GtkProgressBar" id="progress_bar">
+                                    <property name="valign">center</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="scanning_path_label">
+                                    <property name="label" translatable="yes">Preparing scan...</property>
+                                    <property name="ellipsize">end</property>
+                                    <property name="justify">center</property>
+                                    <property name="max-width-chars">50</property>
+                                    <style>
+                                      <class name="dim-label"/>
+                                      <class name="caption"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="cancel_scan_btn">
+                                    <property name="label" translatable="yes">Cancel Scan</property>
+                                    <property name="halign">center</property>
+                                    <style>
+                                      <class name="destructive-action"/>
+                                      <class name="pill"/>
+                                    </style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+
+                    <!-- Page 3: Results Preferences Page -->
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">results_page</property>
+                        <property name="child">
+                          <object class="AdwPreferencesPage">
+
+                            <!-- Summary Stats Row -->
+                            <child>
+                              <object class="AdwPreferencesGroup">
+                                <property name="title" translatable="yes">Scan Summary</property>
+                                <child>
+                                  <object class="AdwActionRow" id="stat_size_row">
+                                    <property name="title" translatable="yes">Total Modules Storage</property>
+                                    <property name="subtitle" translatable="yes">Storage currently consumed by node_modules</property>
+                                    <property name="icon-name">drive-harddisk-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkLabel" id="total_size_label">
+                                        <property name="label">0.0 Bytes</property>
+                                        <style>
+                                          <class name="title-2"/>
+                                          <class name="bold"/>
+                                          <class name="numeric"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow" id="stat_projects_row">
+                                    <property name="title" translatable="yes">Node Projects Found</property>
+                                    <property name="subtitle" translatable="yes">Directories containing package.json</property>
+                                    <property name="icon-name">folder-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkLabel" id="total_projects_label">
+                                        <property name="label">0</property>
+                                        <style>
+                                          <class name="title-2"/>
+                                          <class name="bold"/>
+                                          <class name="numeric"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow" id="stat_count_row">
+                                    <property name="title" translatable="yes">Dependencies Installed</property>
+                                    <property name="subtitle" translatable="yes">0 out of 0 projects have node_modules installed</property>
+                                    <property name="icon-name">folder-download-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkLabel" id="total_count_label">
+                                        <property name="label">0</property>
+                                        <style>
+                                          <class name="title-2"/>
+                                          <class name="bold"/>
+                                          <class name="numeric"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <!-- System Storage Disk Analytics -->
+                            <child>
+                              <object class="AdwPreferencesGroup" id="disk_group">
+                                <property name="title" translatable="yes">System Partition Analytics</property>
+                                <child>
+                                  <object class="AdwActionRow" id="disk_total_row">
+                                    <property name="title" translatable="yes">Total Partition Capacity</property>
+                                    <property name="icon-name">drive-harddisk-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkLabel" id="disk_total_label">
+                                        <property name="label">0.0 GB</property>
+                                        <style>
+                                          <class name="bold"/>
+                                          <class name="numeric"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow" id="disk_free_row">
+                                    <property name="title" translatable="yes">Free Space Available</property>
+                                    <property name="icon-name">disk-usage-app-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkLabel" id="disk_free_label">
+                                        <property name="label">0.0 GB</property>
+                                        <style>
+                                          <class name="bold"/>
+                                          <class name="numeric"/>
+                                          <class name="success"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow" id="disk_modules_ratio_row">
+                                    <property name="title" translatable="yes">Node Modules Occupancy</property>
+                                    <property name="subtitle" translatable="yes">Percentage of total space eaten by node_modules</property>
+                                    <property name="icon-name">view-ringschart-symbolic</property>
+                                    <child type="suffix">
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">4</property>
+                                        <property name="valign">center</property>
+                                        <child>
+                                          <object class="GtkLabel" id="disk_modules_ratio_label">
+                                            <property name="label">0.0%</property>
+                                            <property name="halign">end</property>
+                                            <style>
+                                              <class name="bold"/>
+                                              <class name="numeric"/>
+                                            </style>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkProgressBar" id="disk_modules_progress">
+                                            <property name="width-request">150</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <!-- Scanned Folders Boxed List Group -->
+                            <child>
+                              <object class="AdwPreferencesGroup">
+                                <property name="title" translatable="yes">Found Folders</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+
+                                    <!-- List Filters Bar -->
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">12</property>
+                                        <property name="margin-bottom">4</property>
+                                        <child>
+                                          <object class="GtkCheckButton" id="select_all_check">
+                                            <property name="label" translatable="yes">Select All Visible</property>
+                                            <property name="valign">center</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="hexpand">True</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkDropDown" id="sort_dropdown">
+                                            <property name="valign">center</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+
+                                    <!-- Dynamic Boxed List -->
+                                    <child>
+                                      <object class="GtkListBox" id="listbox">
+                                        <property name="selection-mode">none</property>
+                                        <style>
+                                          <class name="boxed-list"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <!-- Node Install Products Explorer Group -->
+                            <child>
+                              <object class="AdwPreferencesGroup">
+                                <property name="title" translatable="yes">Node Install Products</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                      <object class="GtkListBox" id="projects_listbox">
+                                        <property name="selection-mode">none</property>
+                                        <style>
+                                          <class name="boxed-list"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+                <!-- Sliding Bottom Action Bar -->
+                <child>
+                  <object class="GtkRevealer" id="action_revealer">
+                    <property name="transition-type">slide-up</property>
+                    <property name="child">
+                      <object class="GtkActionBar" id="action_bar">
+                        <child type="start">
+                          <object class="GtkLabel" id="action_bar_label">
+                            <property name="label">0 folders selected</property>
+                            <style>
+                              <class name="bold"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child type="end">
+                          <object class="GtkButton" id="delete_selected_btn">
+                            <property name="label" translatable="yes">Clean Selected</property>
+                            <style>
+                              <class name="destructive-action"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">app.shortcuts</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About The Node Modules</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
